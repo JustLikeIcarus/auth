@@ -46,12 +46,14 @@ class Model_Auth_User_Token extends ORM {
 			// Set the created time, token, and hash of the user agent
 			$this->created = $this->_now;
 			$this->user_agent = sha1(Request::$user_agent);
+			$this->token = $this->create_token();
+			return parent::create();
 		}
-
-		// Create a new token each time the token is saved
-		$this->token = $this->create_token();
-
-		return parent::save();
+		else
+		{
+			$this->token = $this->create_token();
+			return parent::update();	
+		}		
 	}
 
 	/**
