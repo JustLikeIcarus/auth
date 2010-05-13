@@ -29,7 +29,6 @@ class Model_Auth_User extends ORM {
 			(
 				'not_empty'  => NULL,
 				'min_length' => array(5),
-				'max_length' => array(42),
 			),
 			'email' => array
 			(
