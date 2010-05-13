@@ -52,8 +52,8 @@ class Model_Auth_User extends ORM {
 	{
 		$callbacks = array
 		(
-			'username' => array('username_available'),
-			'email' => array('email_available'),
+			'username' => array($this, 'username_available'),
+			'email' => array($this, 'email_available'),
 		);
 	
 		return $callbacks;
