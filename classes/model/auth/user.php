@@ -50,11 +50,10 @@ class Model_Auth_User extends ORM {
 	*/
 	public function callbacks()
 	{
-		$model = ORM::factory('user');
 		$callbacks = array
 		(
-			'username' => array($model, 'username_available'),
-			'email' => array($model, 'email_available'),
+			'username' => array(array($this, 'username_available')),
+			'email' => array(array($this, 'email_available')),
 		);
 	
 		return $callbacks;
