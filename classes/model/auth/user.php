@@ -174,7 +174,7 @@ class Model_Auth_User extends ORM {
 			$this->_object['password'] = Auth::instance()->hash_password($this->_object['password']);
 		}
 		
-		if($this->loaded() === TRUE)
+		if($this->loaded())
 		{
 			return parent::update();
 		}
