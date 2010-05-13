@@ -3,43 +3,62 @@
 class Model_Auth_User extends ORM {
 
 	// Relationships
-	protected $_has_many = array(
+	protected $_has_many = array
+	(
 		'user_tokens' => array('model' => 'user_token'),
 		'roles'       => array('model' => 'role', 'through' => 'roles_users'),
 	);
+	
+	/**
+	* Returns array of rules for validation
+	*
+	* @return array
+	*/
+	public function rules() 
+	{
+		$rules = array
+		(
+			'username' => array
+			(
+				'not_empty'  => NULL,
+				'min_length' => array(4),
+				'max_length' => array(32),
+				'regex'      => array('/^[-\pL\pN_.]++$/uD'),
+			),
+			'password' => array
+			(
+				'not_empty'  => NULL,
+				'min_length' => array(5),
+				'max_length' => array(42),
+			),
+			'email' => array
+			(
+				'not_empty'  => NULL,
+				'min_length' => array(4),
+				'max_length' => array(127),
+				'email'      => NULL,
+			),
+		);
+		
+		return $rules;
+	}
 
-	// Validation rules
-	protected $_rules = array(
-		'username' => array(
-			'not_empty'  => NULL,
-			'min_length' => array(4),
-			'max_length' => array(32),
-			'regex'      => array('/^[-\pL\pN_.]++$/uD'),
-		),
-		'password' => array(
-			'not_empty'  => NULL,
-			'min_length' => array(5),
-			'max_length' => array(42),
-		),
-		'password_confirm' => array(
-			'matches'    => array('password'),
-		),
-		'email' => array(
-			'not_empty'  => NULL,
-			'min_length' => array(4),
-			'max_length' => array(127),
-			'email'      => NULL,
-		),
-	);
-
-	// Validation callbacks
-	protected $_callbacks = array(
-		'username' => array('username_available'),
-		'email' => array('email_available'),
-	);
-
-	// Columns to ignore
-	protected $_ignored_columns = array('password_confirm');
+	/**
+	* Returns array of callbacks for validation
+	*
+	* @return array
+	*/
+	public function callbacks()
+	{
+		$callbacks = array
+		(
+			'username' => array('username_available'),
+			'email' => array('email_available'),
+		);
+	
+		return $callbacks;
+	}
+	
 
 	/**
 	 * Validates login information from an array, and optionally redirects
@@ -84,35 +103,6 @@ class Model_Auth_User extends ORM {
 		return $status;
 	}
 
-	/**
-	 * Validates an array for a matching password and password_confirm field,
-	 * and optionally redirects after a successful save.
-	 *
-	 * @param   array    values to check
-	 * @param   string   URI or URL to redirect to
-	 * @return  boolean
-	 */
-	public function change_password(array & $array, $redirect = FALSE)
-	{
-		$array = Validate::factory($array)
-			->filter(TRUE, 'trim')
-			->rules('password', $this->_rules['password'])
-			->rules('password_confirm', $this->_rules['password_confirm']);
-
-		if ($status = $array->check())
-		{
-			// Change the password
-			$this->password = $array['password'];
-
-			if ($status = $this->save() AND is_string($redirect))
-			{
-				// Redirect to the success page
-				Request::instance()->redirect($redirect);
-			}
-		}
-
-		return $status;
-	}
 
 	/**
 	 * Does the reverse of unique_key_exists() by triggering error if username exists.
@@ -183,8 +173,15 @@ class Model_Auth_User extends ORM {
 		{
 			$this->_object['password'] = Auth::instance()->hash_password($this->_object['password']);
 		}
-
-		return parent::save();
+		
+		if(isset($this->_object['id']))
+		{
+			return parent::update();
+		}
+		else
+		{
+			return parent::create();
+		}
 	}
 
 } // End Auth User Model
