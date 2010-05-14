@@ -11,10 +11,12 @@ class Model_Auth_User extends ORM {
 	
 	/**
 	* Returns array of rules for validation
+	* Optionally a specific rule can be returned by passing in the field name
 	*
+	* @param string Key of rules array to return
 	* @return array
 	*/
-	public function rules() 
+	public function rules($field = NULL) 
 	{
 		$rules = array
 		(
@@ -39,7 +41,14 @@ class Model_Auth_User extends ORM {
 			),
 		);
 		
-		return $rules;
+		if(is_string($field))
+		{
+			return $rules[$field];
+		}
+		else
+		{
+			return $rules;
+		}
 	}
 
 	/**
@@ -71,8 +80,8 @@ class Model_Auth_User extends ORM {
 	{
 		$array = Validate::factory($array)
 			->filter(TRUE, 'trim')
-			->rules('username', $this->_rules['username'])
-			->rules('password', $this->_rules['password']);
+			->rules('username', $this->rules('username'))
+			->rules('password', $this->rules('password'));
 
 		// Login starts out invalid
 		$status = FALSE;
