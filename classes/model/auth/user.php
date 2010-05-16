@@ -67,19 +67,22 @@ class Model_Auth_User extends ORM {
 		return $callbacks;
 	}
 	
-	public function pre_save_filters(){
+	public function pre_save_filters()
+	{
 		
 		$filters = array
 		(
-			'password' => array
-			(
 				'Auth::instance()->hash_password' => array(),
-			)
 		);
 		
 		return $filters;
 	}
-
+	
+	public function hash_password()
+	{
+		
+	}
+	
 	/**
 	 * Validates login information from an array, and optionally redirects
 	 * after a successful login.
