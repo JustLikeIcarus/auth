@@ -73,7 +73,7 @@ class Model_Auth_User extends ORM {
 		(
 			'password' => array
 			(
-				'Auth::instance()->hash_password()' => array(),
+				'Auth::instance()->hash_password' => array(),
 			)
 		);
 		
