@@ -72,15 +72,17 @@ class Model_Auth_User extends ORM {
 		
 		$filters = array
 		(
-				'Auth::instance()->hash_password' => array(),
+				'password' => array
+				(
+					'hash_password' => array(),
 		);
 		
 		return $filters;
 	}
 	
-	public function hash_password()
+	public function hash_password($password)
 	{
-		
+		return Auth::instance()->hash_password($password);
 	}
 	
 	/**
