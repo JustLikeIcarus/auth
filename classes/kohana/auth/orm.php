@@ -97,7 +97,7 @@ class Kohana_Auth_ORM extends Auth {
 				// Set token data
 				$token->user_id = $user->id;
 				$token->expires = time() + $this->config['lifetime'];
-				$token->save();
+				$token->create();
 
 				// Set the autologin cookie
 				Cookie::set('authautologin', $token->token, $this->config['lifetime']);
@@ -243,7 +243,7 @@ class Kohana_Auth_ORM extends Auth {
 		$user->last_login = time();
 
 		// Save the user
-		$user->save();
+		$user->update();
 
 		return parent::complete_login($user);
 	}
