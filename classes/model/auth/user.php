@@ -67,6 +67,18 @@ class Model_Auth_User extends ORM {
 		return $callbacks;
 	}
 	
+	public function pre_save_filters(){
+		
+		$filters = array
+		(
+			'password' => array
+			(
+				'Auth::instance()->hash_password()' => array(),
+			)
+		);
+		
+		return $filters;
+	}
 
 	/**
 	 * Validates login information from an array, and optionally redirects
@@ -171,25 +183,13 @@ class Model_Auth_User extends ORM {
 	}
 
 	/**
-	 * Saves the current object. Will hash password if it was changed.
-	 *
-	 * @return  ORM
+	 * Activates a new user by giving them the "login" role.
 	 */
-	public function save()
+	public function activate()
 	{
-		if (array_key_exists('password', $this->_changed))
-		{
-			$this->_object['password'] = Auth::instance()->hash_password($this->_object['password']);
-		}
-		
-		if($this->loaded())
-		{
-			return parent::update();
-		}
-		else
-		{
-			return parent::create();
-		}
+		$login_role = new Model_Role(array('name' =>'login'));
+		$this->add('roles',$login_role);
 	}
+
 
 } // End Auth User Model
