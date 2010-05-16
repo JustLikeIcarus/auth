@@ -75,6 +75,7 @@ class Model_Auth_User extends ORM {
 				'password' => array
 				(
 					'hash_password' => array(),
+				);
 		);
 		
 		return $filters;
