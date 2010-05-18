@@ -11,7 +11,7 @@
 abstract class Kohana_Auth {
 
 	// Auth instances
-	protected static $instance;
+	protected static $instances;
 
 	/**
 	 * Singleton pattern
@@ -20,7 +20,7 @@ abstract class Kohana_Auth {
 	 */
 	public static function instance()
 	{
-		if ( ! isset(Auth::$instance))
+		if ( ! isset(Auth::$instances))
 		{
 			// Load the configuration for this type
 			$config = Kohana::config('auth');
@@ -34,10 +34,10 @@ abstract class Kohana_Auth {
 			$class = 'Auth_'.ucfirst($type);
 
 			// Create a new session instance
-			Auth::$instance = new $class($config);
+			Auth::$instances = new $class($config);
 		}
 
-		return Auth::$instance;
+		return Auth::$instances;
 	}
 
 	/**
@@ -47,7 +47,17 @@ abstract class Kohana_Auth {
 	 */
 	public static function factory($config = array())
 	{
-		return new Auth($config);
+		if ( ! $type = $config->get('driver'))
+		{
+			$type = 'ORM';
+		}
+
+		// Set the session class name
+		$class = 'Auth_'.ucfirst($type);
+
+		// Create a new session instance
+		return new $class($config);
+
 	}
 
 	protected $session;
