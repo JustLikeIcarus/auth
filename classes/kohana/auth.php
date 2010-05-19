@@ -22,6 +22,7 @@ abstract class Kohana_Auth {
 	{
 		if ( ! isset(Auth::$instances))
 		{
+echo "instances not set";
 			// Load the configuration for this type
 			$config = Kohana::config('auth');
 
