@@ -36,7 +36,7 @@ abstract class Kohana_Auth {
 			// Create a new session instance
 			Auth::$instances = new $class($config);
 		}
-
+ echo Kohana::debug(Auth::$instances);
 		return Auth::$instances;
 	}
 
