@@ -11,7 +11,7 @@
 abstract class Kohana_Auth {
 
 	// Auth instances
-	private static $instances;
+	protected static $instances;
 
 	/**
 	 * Singleton pattern
@@ -70,7 +70,7 @@ echo "instances not set";
 	 *
 	 * @return  void
 	 */
-	public function __construct($config = array())
+	private function __construct($config = array())
 	{
 		// Clean up the salt pattern and split it into an array
 		$config['salt_pattern'] = preg_split('/,\s*/', Kohana::config('auth')->get('salt_pattern'));
