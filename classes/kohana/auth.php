@@ -20,7 +20,7 @@ abstract class Kohana_Auth {
 	 */
 	public static function instance()
 	{
-		if ( ! isset(self::$instances))
+		if ( ! isset(Auth_ORM::$instances))
 		{
 echo "instances not set";
 			// Load the configuration for this type
@@ -35,10 +35,10 @@ echo "instances not set";
 			$class = 'Auth_'.ucfirst($type);
 
 			// Create a new session instance
-			self::$instances = new $class($config);
+			Auth_ORM::$instances = new $class($config);
 		}
  echo Kohana::debug(self::$instances);
-		return self::$instances;
+		return Auth_ORM::$instances;
 	}
 
 	/**
