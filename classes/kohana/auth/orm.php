@@ -82,8 +82,7 @@ class Kohana_Auth_ORM extends Auth {
 			$username = $user;
 
 			// Load the user
-			$user = ORM::factory('user');
-			$user->where($user->unique_key($username), '=', $username)->find();
+			$user = ORM::factory('user')->where($user->unique_key($username), '=', $username)->find();
 		}
 
 		// If the passwords match, perform a login
