@@ -11,7 +11,7 @@
 abstract class Kohana_Auth {
 
 	// Auth instances
-	protected static $instances;
+	protected static $instance;
 
 	/**
 	 * Singleton pattern
@@ -20,7 +20,7 @@ abstract class Kohana_Auth {
 	 */
 	public static function instance()
 	{
-		if ( ! isset(Auth_ORM::$instances))
+		if ( ! isset(Auth::$instance))
 		{
 echo "instances not set";
 			// Load the configuration for this type
@@ -35,10 +35,10 @@ echo "instances not set";
 			$class = 'Auth_'.ucfirst($type);
 
 			// Create a new session instance
-			Auth_ORM::$instances = new $class($config);
+			Auth::$instance = new $class($config);
 		}
  echo Kohana::debug(self::$instances);
-		return Auth_ORM::$instances;
+		return Auth::$instance;
 	}
 
 	/**
@@ -243,6 +243,7 @@ echo "instances not set";
 
 	protected function complete_login($user)
 	{
+echo "COMPLETE LOGIN";
 		// Regenerate session_id
 		$this->session->regenerate();
 
