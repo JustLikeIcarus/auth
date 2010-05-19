@@ -2,7 +2,7 @@
 
 abstract class Auth extends Kohana_Auth {
 
-protected static $instances;
+private static $instances;
 
 	/**
 	 * Singleton pattern
