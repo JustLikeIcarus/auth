@@ -37,7 +37,6 @@ echo "instances not set";
 			// Create a new session instance
 			Auth::$instance = new $class($config);
 		}
- echo Kohana::debug(self::$instances);
 		return Auth::$instance;
 	}
 
