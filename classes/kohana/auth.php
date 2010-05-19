@@ -10,9 +10,6 @@
  */
 abstract class Kohana_Auth {
 
-	// Auth instances
-	protected static $instance;
-
 	/**
 	 * Singleton pattern
 	 *
@@ -20,9 +17,9 @@ abstract class Kohana_Auth {
 	 */
 	public static function instance()
 	{
-		if ( ! isset(Auth::$instance))
+                static $_instance;
+		if ( ! isset($_instance))
 		{
-echo "instances not set";
 			// Load the configuration for this type
 			$config = Kohana::config('auth');
 
@@ -35,9 +32,9 @@ echo "instances not set";
 			$class = 'Auth_'.ucfirst($type);
 
 			// Create a new session instance
-			Auth::$instance = new $class($config);
+			$_instance = new $class($config);
 		}
-		return Auth::$instance;
+		return $_instance;
 	}
 
 	/**
